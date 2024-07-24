@@ -1,3 +1,4 @@
 import { getPictures } from './data';
-getPictures();
+import {generateThumbnails} from './thumbnail';
+generateThumbnails(getPictures());
 
