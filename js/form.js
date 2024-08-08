@@ -3,7 +3,7 @@ import {
   init as initEffect,
   reset as resetEffect
 } from './effect.js';
-import { showSuccessMessage } from './message';
+
 
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -47,6 +47,7 @@ const hideModal = () => {
   pristine.reset();
   overlay.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
+  form.reset();
 };
 const toggleSubmitButton = (isDisabled) => {
   submitButton.disabled = isDisabled;
@@ -92,16 +93,15 @@ const onFileInputChange = () => {
   showModal();
 };
 
+const isValid = () => pristine.validate();
+
 const setOnFormSubmit = (callback) => {
   form.addEventListener('submit', async (evt) => {
     evt.preventDefault();
-    const isValid = () => pristine.validate();
-
     if (isValid()) {
       toggleSubmitButton(true);
       await callback(new FormData(form));
       toggleSubmitButton();
-      showSuccessMessage();
     }
   });
 };

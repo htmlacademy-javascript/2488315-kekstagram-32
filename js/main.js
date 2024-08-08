@@ -14,12 +14,14 @@ setOnFormSubmit(async (data) => {
   }
 });
 
-try {
-  const data = await getData();
-  const debouncedRenderGallery = debounce(renderGallery);
-  initFilter(data, debouncedRenderGallery);
-  renderGallery(getFilteredPictures());
-} catch {
-  showAlert();
-}
-
+const init = async () => {
+  try {
+    const data = await getData();
+    const debouncedRenderGallery = debounce(renderGallery);
+    initFilter(data, debouncedRenderGallery);
+    renderGallery(getFilteredPictures());
+  } catch {
+    showAlert();
+  }
+};
+init();
