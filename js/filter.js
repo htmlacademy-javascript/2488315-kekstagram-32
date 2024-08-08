@@ -6,7 +6,7 @@ const Filter = {
 };
 
 const filterElement = document.querySelector('.img-filters');
-const currentFilter = Filter.DEFAULT;
+let currentFilter = Filter.DEFAULT;
 const pictures = [];
 
 const sortRandomly = () => Math.random() - 0.5;
@@ -27,7 +27,7 @@ const getFilteredPictures = () => {
 
 const setOnFilterClick = (callback) => {
   filterElement.addEventListener('click', (evt) => {
-    if (!evt.target.classList.contains('img-filter__button')) {
+    if (!evt.target.classList.contains('img-filters__button')) {
       return;
     }
 
@@ -40,14 +40,15 @@ const setOnFilterClick = (callback) => {
       .querySelector('.img-filters__button--active')
       .classList.remove('img-filters__button--active');
     clickedButton.classList.add('img-filters__button--active');
-    //currentFilter = clickedButton.id;
+    currentFilter = clickedButton.id;
     callback(getFilteredPictures());
   });
 };
 
 const init = (loadedPictures, callback) => {
   filterElement.classList.remove('img-filters--inactive');
-  //pictures = [...loadedPictures];
+  pictures.length = 0;
+  pictures.push(...loadedPictures.slice());
   setOnFilterClick(callback);
 };
 
