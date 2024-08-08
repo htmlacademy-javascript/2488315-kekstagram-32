@@ -3,14 +3,19 @@ import {
   init as initEffect,
   reset as resetEffect
 } from './effect.js';
-
+import { showSuccessMessage } from './message';
 
 const MAX_HASHTAG_COUNT = 5;
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;
+
 const ErrorText = {
   INVALID_COUNT: `Максимум ${MAX_HASHTAG_COUNT} хештегов`,
   NOT_UNIQUE: 'Хештеги должны быть уникальными',
   INVALID_PATTERN: 'Неправильный хештег',
+};
+const SubmitButtonText = {
+  IDLE:'Опубликовать',
+  SUBMITTING:'Отправляю...',
 };
 
 const body = document.querySelector('body');
@@ -20,6 +25,8 @@ const cancelButton = form.querySelector('.img-upload__cancel');
 const fileField = form.querySelector('.img-upload__input');
 const hashtagField = form.querySelector('.text__hashtags');
 const commentField = form.querySelector('.text__description');
+const submitButton = form.querySelector('.img-upload__submit');
+
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -34,17 +41,24 @@ const showModal = () => {
 };
 
 const hideModal = () => {
-  form.reset();
+  overlay.classList.add('hidden');
   resetScale();
   resetEffect();
   pristine.reset();
   overlay.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
 };
+const toggleSubmitButton = (isDisabled) => {
+  submitButton.disabled = isDisabled;
+  submitButton.textContent = isDisabled
+    ? SubmitButtonText.SUBMITTING
+    : SubmitButtonText.IDLE;
+};
 
 const isTextFieldFocused = () =>
   document.activeElement === hashtagField ||
   document.activeElement === commentField;
+
 
 const normalizeTags = (tagString) => tagString
   .trim()
@@ -59,13 +73,15 @@ const hasUniqueTags = (value) => {
   const lowerCaseTags = normalizeTags(value).map((tag) => tag.toLowerCase());
   return lowerCaseTags.length === new Set(lowerCaseTags).size;
 };
+const isErrorMessageShown = () => Boolean(document.querySelector('.error'));
 
 function onDocumentKeydown(evt) {
-  if (evt.key === 'Escape' && !isTextFieldFocused()) {
+  if (evt.key === 'Escape' && !isTextFieldFocused() && !isErrorMessageShown()) {
     evt.preventDefault();
     hideModal();
   }
 }
+
 
 const onCancelButtonClick = () => {
   hideModal();
@@ -76,10 +92,20 @@ const onFileInputChange = () => {
   showModal();
 };
 
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  pristine.validate();
+const setOnFormSubmit = (callback) => {
+  form.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const isValid = () => pristine.validate();
+
+    if (isValid()) {
+      toggleSubmitButton(true);
+      await callback(new FormData(form));
+      toggleSubmitButton();
+      showSuccessMessage();
+    }
+  });
 };
+
 
 pristine.addValidator(
   hashtagField,
@@ -108,6 +134,6 @@ pristine.addValidator(
 
 fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
-form.addEventListener('submit', onFormSubmit);
-
 initEffect();
+
+export { setOnFormSubmit, hideModal };
