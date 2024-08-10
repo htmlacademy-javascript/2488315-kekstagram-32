@@ -1,3 +1,4 @@
+import { loadingPicture } from './avatar';
 const SCALE_STEP = 25;
 const MIN_SCALE = 25;
 const MAX_SCALE = 100;
@@ -9,6 +10,8 @@ const biggerButtonElement = modalElement.querySelector('.scale__control--bigger'
 const scaleInputElement = modalElement.querySelector('.scale__control--value');
 const imageElement = modalElement.querySelector('.img-upload__preview img');
 
+
+loadingPicture();
 const scaleImage = (value) => {
   imageElement.style.transform = `scale(${value / 100})`;
   scaleInputElement.value = `${value}%`;
