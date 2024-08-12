@@ -11,7 +11,6 @@ export const effectToFilter = {
   [Effect.CHROME]: {
     style: 'grayscale',
     unit:'',
-
   },
 
   [Effect.SEPIA]: {
@@ -47,21 +46,25 @@ export const effectToSliderOptions = {
     max: 1,
     step: 0.1,
   },
+
   [Effect.SEPIA]: {
     min: 0,
     max: 1,
     step: 0.1,
   },
+
   [Effect.MARVIN]: {
     min: 0,
     max: 100,
     step: 1,
   },
+
   [Effect.PHOBOS]: {
     min: 0,
     max: 3,
     step: 0.1,
   },
+
   [Effect.HEAT]: {
     min: 1,
     max: 3,

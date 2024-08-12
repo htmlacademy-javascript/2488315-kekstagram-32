@@ -5,7 +5,6 @@ const imageElement = modalElement.querySelector('.img-upload__preview img');
 const effectsElement = modalElement.querySelector('.effects');
 const sliderElement = modalElement.querySelector('.effect-level__slider');
 const sliderContainerElement = modalElement.querySelector('.img-upload__effect-level');
-
 const effectLevelElement = modalElement.querySelector('.effect-level__value');
 
 let chosenEffect = Effect.DEFAULT;
@@ -17,6 +16,7 @@ const setImageStyle = () => {
     imageElement.style.filter = null;
     return;
   }
+
   const { value } = effectLevelElement;
   const { style, unit } = effectToFilter[chosenEffect];
   imageElement.style.filter = `${style}(${value}${unit})`;
@@ -46,6 +46,7 @@ const createSlider = ({min, max, step}) => {
       from: (value) => Number(value),
     }
   });
+
   sliderElement.noUiSlider.on('update', onSliderUpdate);
   hideSlider();
 };
@@ -85,4 +86,5 @@ const init = () => {
   createSlider(effectToSliderOptions[chosenEffect]);
   effectsElement.addEventListener('change', onEffectsChange);
 };
+
 export { init, reset };

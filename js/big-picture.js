@@ -1,6 +1,4 @@
 const COMMENTS_PER_PORTION = 5;
-
-
 const bigPictureElement = document.querySelector ('.big-picture');
 const commentShownCountElement = bigPictureElement.querySelector ('.social__comment-shown-count');
 const commentTotalCountElement = bigPictureElement.querySelector ('.social__comment-total-count');
@@ -9,7 +7,6 @@ const commentsLoaderElement = bigPictureElement.querySelector ('.comments-loader
 const bodyElement = document.querySelector ('body');
 const cancelButtonElement = bigPictureElement.querySelector ('.big-picture__cancel');
 const commentElement = document.querySelector ('#comment').content.querySelector ('.social__comment');
-
 
 let commentsShown = 0;
 let comments = [];
@@ -32,6 +29,7 @@ const renderComments = () => {
   } else {
     commentsLoaderElement.classList.remove('hidden');
   }
+
   const fragment = document.createDocumentFragment();
   for (let i = 0; i < commentsShown; i++) {
     const comment = createComment(comments[i]);
@@ -75,15 +73,12 @@ const showBigPicture = (data) => {
   bigPictureElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
   commentsLoaderElement.classList.add('hidden');
-
   document.addEventListener('keydown',onDocumentKeydown);
-
   renderPictureDetails(data);
   comments = data.comments;
   if (comments.length > 0) {
     renderComments();
   }
-
 };
 
 cancelButtonElement.addEventListener('click', onCancelButtonClick);
