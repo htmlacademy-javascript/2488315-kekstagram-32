@@ -4,6 +4,7 @@ import { showAlert, debounce } from './util.js';
 import { setOnFormSubmit, hideModal } from './form.js';
 import { showSuccessMessage, showErrorMessage } from './message.js';
 import { init as initFilter, getFilteredPictures } from './filter.js';
+
 setOnFormSubmit(async (data) => {
   try {
     await sendData(data);
@@ -24,4 +25,5 @@ const init = async () => {
     showAlert();
   }
 };
+
 init();
