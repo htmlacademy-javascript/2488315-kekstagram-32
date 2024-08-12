@@ -46,6 +46,7 @@ const hideModal = () => {
   overlayElement.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   formElement.reset();
+  bodyElement.classList.remove('modal-open');
 };
 
 const toggleSubmitButton = (isDisabled) => {
